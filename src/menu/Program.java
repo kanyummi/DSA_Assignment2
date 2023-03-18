@@ -15,19 +15,60 @@ public class Program {
 		c = new PC(3, "PC of C");
 	}
 
+	private void printMenu(String title, String[] options) {
+		System.out.printf("\n===================  %s  =================\n", title);
+		int i;
+		for (i = 0; i < options.length; i++) {
+			System.out.printf("%d. %s\n", i + 1, options[i]);
+		}
+
+		System.out.printf("%d. Exit\n", i + 1);
+
+		System.out.println("=================================================");
+		System.out.print("Enter your choice: ");
+	}
+
+	private int choiceValidation() {
+		Scanner scanner = new Scanner(System.in);
+		int choice;
+		while (true) {
+			try {
+				choice = Integer.parseInt(scanner.nextLine());
+				return choice;
+			} catch (Exception e) {
+				// CPU sẽ chạy đến chỗ này khi có cà chớn xảy ra
+				// => JVM không giết app như truyền thống nữa
+				System.out.println("Invalid Input. Please try again!");
+				System.out.print("Enter your choice: ");
+			}
+		}
+	}
+
+	private String messageValidation() {
+		Scanner scanner = new Scanner(System.in);
+		String message;
+		
+		while (true) {
+			System.out.print("Write your Message: ");
+			message = scanner.nextLine().trim();
+
+			if(message.isEmpty()) {
+				System.out.println("Your Message is Empty. Please Write Something!");
+			} else {
+				return message;
+			}
+		}
+	}
+
 	public void mainMenu() {
 		Scanner scanner = new Scanner(System.in);
+		String[] mainMenuOptions = { "Send Messages", "View Messages"};
+		int choice;
 
-		int choice = 0;
-		while (choice != 4) {
-			System.out.println("===================  Main Menu  =================");
-			System.out.println("1. Send Messages");
-			System.out.println("2. View Messages");
-			System.out.println("3. Display Segment");
-			System.out.println("4. Exit");
-			System.out.println("=================================================");
-			System.out.print("Enter your choice: ");
-			choice = scanner.nextInt();
+		do {
+			printMenu("Main Menu", mainMenuOptions);
+
+			choice = choiceValidation();
 
 			switch (choice) {
 			case 1:
@@ -37,125 +78,100 @@ public class Program {
 				viewMessages();
 				break;
 			case 3:
-				System.out.println("You chose option 3.");
-				break;
-			case 4:
 				System.out.println("Goodbye!");
 				break;
 			default:
 				System.out.println("Invalid choice. Please try again.");
 				break;
 			}
-		}
+		} while (choice != 3);
 	}
 
 	private void sendMessageMenu() {
-		Scanner scanner = new Scanner(System.in);
-
 		int choice = 0;
+		String[] mainMenuOptions = { "From PC 1", "From PC 2", "From PC 3" };
+
 		while (choice != 4) {
-			System.out.println("===================  Sub Menu  =================");
-			System.out.println("1. Choose PC 1");
-			System.out.println("2. Choose PC 2");
-			System.out.println("3. Choose PC 3");
-			System.out.println("4. Exit");
-			System.out.println("=================================================");
-			System.out.print("Enter your choice: ");
-			choice = scanner.nextInt();
+			printMenu("Send Message From", mainMenuOptions);
+
+			choice = choiceValidation();
 
 			switch (choice) {
 			case 1:
-				Scanner sub_scanner_1 = new Scanner(System.in);
+				String[] subMenuOptions_1 = { "Send to PC 2", "Send to PC 3" };
 				int sub_choice_1 = 0;
 				while (sub_choice_1 != 3) {
-					System.out.println("===================  Sub Menu  =================");
-					System.out.println("1. Send to PC 2");
-					System.out.println("2. Send to PC 3");
-					System.out.println("3. Exit");
-					System.out.println("=================================================");
-					System.out.print("Enter your choice: ");
-					sub_choice_1 = scanner.nextInt();
+					printMenu("Send Message To", subMenuOptions_1);
+
+					sub_choice_1 = choiceValidation();
 
 					switch (sub_choice_1) {
 					case 1:
-						System.out.print("Write your Message: ");
-						String message = sub_scanner_1.nextLine();
+						String message = messageValidation();
 						this.a.sendMessage(b, message);
 						break;
-					case 2: 
-						System.out.print("Write your Message: ");
-						String message2 = sub_scanner_1.nextLine();
+					case 2:
+						String message2 = messageValidation();
 						this.a.sendMessage(c, message2);
-					    break;
+						break;
 					case 3:
 						break;
-					default: 
+					default:
 						System.out.print("Invalid input. Try again!");
 						break;
 					}
 				}
 				break;
 			case 2:
-				Scanner sub_scanner_2 = new Scanner(System.in);
 				int sub_choice_2 = 0;
+				String[] subMenuOptions_2 = { "Send to PC 1", "Send to PC 3" };
 				while (sub_choice_2 != 3) {
-					System.out.println("===================  Sub Menu  =================");
-					System.out.println("1. Send to PC 1");
-					System.out.println("2. Send to PC 3");
-					System.out.println("3. Exit");
-					System.out.println("=================================================");
-					System.out.print("Enter your choice: ");
-					sub_choice_2 = scanner.nextInt();
+
+					printMenu("Send Message To", subMenuOptions_2);
+
+					sub_choice_2 = choiceValidation();
 
 					switch (sub_choice_2) {
 					case 1:
-						System.out.print("Write your Message: ");
-						String message3 = sub_scanner_2.nextLine();
+						String message3 = messageValidation();
 						this.b.sendMessage(a, message3);
 						break;
-					case 2: 
-						System.out.print("Write your Message: ");
-						String message4 = sub_scanner_2.nextLine();
+					case 2:
+						String message4 = messageValidation();
 						this.b.sendMessage(c, message4);
-					    break;
-					case 3: 
-					    break;
-					default: 
+						break;
+					case 3:
+						break;
+					default:
 						System.out.print("Invalid input. Try again!");
 						break;
 					}
 				}
 				break;
 			case 3:
-				Scanner sub_scanner_3 = new Scanner(System.in);
-				int sub_choice_3 = 0;
-				while (sub_choice_3 != 3) {
-					System.out.println("===================  Sub Menu  =================");
-					System.out.println("1. Send to PC 1");
-					System.out.println("2. Send to PC 2");
-					System.out.println("3. Exit");
-					System.out.println("=================================================");
-					System.out.print("Enter your choice: ");
-					sub_choice_3 = scanner.nextInt();
+				int sub_choice_3;
+				String[] subMenuOptions_3 = { "Send to PC 1", "Send to PC 2" };
+				do {
+					printMenu("Send Message To", subMenuOptions_3);
+
+					sub_choice_3 = choiceValidation();
 
 					switch (sub_choice_3) {
 					case 1:
-						System.out.print("Write your Message: ");
-						String message = sub_scanner_3.nextLine();
+						String message = messageValidation();
 						this.c.sendMessage(a, message);
 						break;
-					case 2: 
-						System.out.print("Write your Message: ");
-						String message2 = sub_scanner_3.nextLine();
+					case 2:
+						String message2 = messageValidation();
 						this.c.sendMessage(b, message2);
-					    break;
-					case 3: 
 						break;
-					default: 
+					case 3:
+						break;
+					default:
 						System.out.print("Invalid input. Try again!");
 						break;
 					}
-				}
+				} while (sub_choice_3 != 3);
 				break;
 			case 4:
 				System.out.println("Goodbye!");
@@ -166,20 +182,15 @@ public class Program {
 			}
 		}
 	}
-	
-	private void viewMessages() {
-		Scanner scanner = new Scanner(System.in);
 
-		int choice = 0;
-		while (choice != 4) {
-			System.out.println("===================  Sub Menu  =================");
-			System.out.println("1. View PC 1");
-			System.out.println("2. View PC 2");
-			System.out.println("3. View PC 3");
-			System.out.println("4. Exit");
-			System.out.println("=================================================");
-			System.out.print("Enter your choice: ");
-			choice = scanner.nextInt();
+	private void viewMessages() {
+
+		int choice;
+		String[] subMenuOptions = { "View PC 1", "View PC 2", "View PC 3" };
+		do {
+			printMenu("View Message", subMenuOptions);
+
+			choice = choiceValidation();
 
 			switch (choice) {
 			case 1:
@@ -200,7 +211,7 @@ public class Program {
 				System.out.println("Invalid choice. Please try again.");
 				break;
 			}
-		}
+		} while (choice != 4);
 	}
 
 }

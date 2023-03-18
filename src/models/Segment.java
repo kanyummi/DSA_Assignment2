@@ -1,5 +1,7 @@
 package models;
 
+import java.util.Arrays;
+
 public class Segment {
 	private int segmentId;
 	private int port;
@@ -44,8 +46,5 @@ public class Segment {
 	public void setData(String message) {
 		this.message = message;
 	}
-	
-	
-	
 	
 }
